@@ -49,7 +49,7 @@
                     array(
 
 
-                        'numberposts' => 3,
+                        'numberposts' => 30,
                         'offset' => 0,
                         'orderby'     => 'date',
                         'order'       => 'DESC',
@@ -84,7 +84,7 @@
                     }
 
 
-                    if ((++$index) > 2){
+                    if ($index > 1){
 
 
                         break;
@@ -92,48 +92,78 @@
 
                     }
 
+                    $fild_en = get_field('description_en',$obj->ID);
+                    $fild_ru = get_field('description',$obj->ID);
 
-                    ?>
+                    if ((LANG == 'RU')&&($fild_ru != '')) {
 
+                      ?>
 
-                    <div class="col-md-3">
-
+                      <div class="col-md-3">
 
                         <a href="/news/<?php echo $obj->post_name; ?>">
 
-
                             <div class="main_news_item">
-
 
                                 <div class="main_news_bg">
 
-
-                                    <?php if (LANG == 'RU') echo $obj->post_title; else echo get_field('title_en',$obj->ID); ?>
-
+                                    <?php echo $obj->post_title; ?>
 
                                     <div class="main_news_bg_text">
-
-
+                                        
                                         <?php echo get_field_lng('description', $obj->ID); ?>
-
 
                                     </div>
 
-
                                 </div>
-
 
                                 <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
 
-
                             </div>
-
 
                         </a>
 
+                    </div>
+
+                      <?php
+
+                      $index++;
+                    } elseif ((LANG == 'EN')&&($fild_en != '')) {
+
+                      ?>
+
+                      <div class="col-md-3">
+
+                        <a href="/news/<?php echo $obj->post_name; ?>">
+
+                            <div class="main_news_item">
+
+                                <div class="main_news_bg">
+
+                                    <?php echo get_field('title_en',$obj->ID); ?>
+
+                                    <div class="main_news_bg_text">
+
+                                        <?php echo get_field('description_en', $obj->ID); ?>
+
+                                    </div>
+
+                                </div>
+
+                                <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
+
+                            </div>
+
+                        </a>
 
                     </div>
 
+                      <?php
+
+                      $index++;
+                     } else continue; ?>
+
+                   </div>
 
                 <?php } ?>
 
@@ -247,5 +277,3 @@
 
 
 </div>
-
-
