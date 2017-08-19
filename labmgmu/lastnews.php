@@ -110,7 +110,7 @@
                                     <?php echo $obj->post_title; ?>
 
                                     <div class="main_news_bg_text">
-                                        
+
                                         <?php echo get_field_lng('description', $obj->ID); ?>
 
                                     </div>
@@ -161,11 +161,9 @@
                       <?php
 
                       $index++;
-                     } else continue; ?>
-
-                   </div>
-
-                <?php } ?>
+                     } else continue;
+              
+                 } ?>
 
 
 
