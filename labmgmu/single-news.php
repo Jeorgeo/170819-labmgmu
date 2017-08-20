@@ -88,7 +88,7 @@
 
                     }
 
-                    if ($news_count > 11){
+                    if ($news_count > 9){
 
                         break;
 
