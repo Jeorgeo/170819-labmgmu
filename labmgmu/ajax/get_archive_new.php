@@ -98,7 +98,11 @@ foreach ($news as $index=>$obj) {
       } else continue;
 }
 $news_place = '';
-if (count($news[0])) {
+if ((count($news[0]))&&(LANG == 'RU')) {
+  $label_en = get_field('content_en',$obj->ID);
+  $label_ru = get_field('content',$obj->ID);
+
+  if ((LANG == 'RU')&&($label_ru != '')) {
 
     $big_post =  $news[0];
     $news_place .='<div class="big_news_item">';
@@ -118,7 +122,30 @@ if (count($news[0])) {
     $news_place .='<a href="#">' . lng_text('Автор') . ': ' . $user->display_name .'</a>';
     $news_place .='</div>';
     $news_place .='</div>';
-}
+
+    } elseif ((LANG == 'EN')&&($label_en != '')) {
+
+      $big_post =  $news[0];
+      $news_place .='<div class="big_news_item">';
+      $news_place .='<h3>' . echo get_field('title_en',$big_post->ID) .'</h3>';
+      $img = get_field('big_picture', $big_post->ID);
+      if ($img) {
+          $news_place .='<img src="' . $img['url'] .'" alt=""/>';
+      }
+      $news_place .='<div class="big_news_item_date">';
+      $date = strtotime($big_post->post_date);
+      $date = date("d ",$date) . get_r_month(date("n",$date)) . date(" Y H:i",$date);
+      $news_place .= $date;
+      $news_place .='</div>';
+      $news_place .= get_field('content_en', $big_post->ID);
+      $user = get_user_by('id', $big_post->author);
+      $news_place .='<div class="big_news_item_avtor">';
+      $news_place .='<a href="#">' . lng_text('Автор') . ': ' . $user->display_name .'</a>';
+      $news_place .='</div>';
+      $news_place .='</div>';
+
+      } else continue;
+};
 $result['list_place'] = $list_place;
 $result['news_place'] = $news_place;
 $result['archive_month'] = get_month_name($month);
