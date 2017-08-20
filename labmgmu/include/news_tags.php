@@ -51,7 +51,14 @@ if (count($news)) {
     <div class="col-md-3"></div>
 </div>
 <div class="row">
-    <?php foreach ($news as $obj) { ?>
+    <?php foreach ($news as $obj) {
+
+      $tag_en = get_field('description_en',$obj->ID);
+      $tag_ru = get_field('description',$obj->ID);
+
+      if ((LANG == 'RU')&&($tag_ru != '')) {
+
+      ?>
         <div class="col-md-3">
             <a class="news_mini_a" href="/news/<?php echo $obj->post_name; ?>">
                 <div class="news_mini">
@@ -62,14 +69,44 @@ if (count($news)) {
                         echo $date; ?>
                     </div>
                     <div class="news_mini_title">
-                        <?php if (LANG == 'RU') echo $obj->post_title; else echo get_field('title_en',$obj->ID); ?>
+                        <?php echo $obj->post_title; ?>
                     </div>
                     <div class="news_mini_info">
-                        <?php echo get_field_lng('description',$obj->ID); ?>
+                        <?php echo get_field('description',$obj->ID); ?>
                     </div>
                 </div>
             </a>
         </div>
-    <?php } ?>
+
+        <?php
+
+      } elseif ((LANG == 'EN')&&($tag_en != '')) {
+
+        ?>
+
+        <div class="col-md-3">
+            <a class="news_mini_a" href="/news/<?php echo $obj->post_name; ?>">
+                <div class="news_mini">
+                    <div class="news_mini_date">
+                        <?php
+                        $date = strtotime($obj->post_date);
+                        $date = date("d ",$date) . get_r_month(date("n",$date)) . date(" Y H:i",$date);
+                        echo $date; ?>
+                    </div>
+                    <div class="news_mini_title">
+                        <?php echo get_field('title_en',$obj->ID); ?>
+                    </div>
+                    <div class="news_mini_info">
+                        <?php echo get_field('description_en',$obj->ID); ?>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <?php
+      } else continue;
+    };
+
+
+     } ?>
 </div>
-<?php } ?>
