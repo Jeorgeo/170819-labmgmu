@@ -1660,6 +1660,7 @@ function lng_text($text) {
             case 'Поиск': return 'Search';
             case 'Новости похожие по теме': return 'Related news';
             case 'Новостей за этот период нет': return 'There are no news for this period';
+            case 'Проводимые исследования:': return 'Conducted research:';
         }
     }
     return $text;

@@ -443,6 +443,11 @@ the_post();
                                 if (get_field('archive', $obj->ID)){
                                     continue;
                                 }
+
+                                $studies_en = get_field('description_en',$obj->ID);
+                                $studies_ru = get_field('descriptin',$obj->ID);
+
+                                if ((LANG == 'RU')&&($studies_ru != '')) {
                                 ?>
 
                                 <a onclick="get_study(<?php echo $obj->ID; ?>, 0); return false;" href="#">
@@ -457,7 +462,26 @@ the_post();
                                         <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
                                     </div>
                                 </a>
-                            <?php $index++; } ?>
+
+                            <?php $index++;
+                            } elseif ((LANG == 'EN')&&($studies_en != '')) {?>
+
+                              <a onclick="get_study(<?php echo $obj->ID; ?>, 0); return false;" href="#">
+                                  <div class="main_news_item">
+                                      <div id="study_bg<?php echo $obj->ID; ?>" class="study_bg <?php
+                                          if (!$index) {
+                                              echo 'active';
+                                              $study = $obj;
+                                          } ?>">
+                                          <span class="study_post_title"><?php echo get_field('title_en',$obj->ID); ?></span>
+                                      </div>
+                                      <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
+                                  </div>
+                              </a>
+
+                              <?php $index++;
+                          } else continue;
+                      }; ?>
 
                             <a href="/recruit/archive/">
                                 <div class="study_arc_btn">
@@ -471,7 +495,8 @@ the_post();
                             <?php
                                 if (isset($study) && $study != false) { ?>
                                 <div id="big_news_item" class="big_news_item">
-                                    <h3 class="study_title"><?php echo $study->post_title; ?></h3>
+                                    <h3 class="study_title"><?php if (LANG == 'RU') echo $study->post_title;
+                                    else echo get_field('title_en', $study->ID); ?></h3>
                                     <?php
                                     $img = get_field('picture', $study->ID);
                                     if ($img) { ?>
@@ -485,7 +510,8 @@ the_post();
                                         $date = date("d ",$date) . get_r_month(date("n",$date));
                                         echo $date; ?>
                                     </div>
-                                    <?php echo wiki(get_field_lng('descriptin', $study->ID)); ?>
+                                    <?php if (LANG == 'RU') echo wiki(get_field('descriptin', $study->ID));
+                                     else echo wiki(get_field('description_en', $study->ID)); ?>
                                 </div>
                             <?php } ?>
                         </div>
