@@ -246,13 +246,30 @@
 
                         <?php
 
-                        if (count($news[0])) {
+                        $ib_post = 0;
 
-                            $big_post =  $news[0];
+                        $lb_post = true;
 
-                            require_once "include/news_big.php";
+                        while ($ib_post <= 30) {  //Делаем выборку по последним 30 новостям
+                          if(($news[$ib_post]) && ($lb_post)) {
 
-                        }
+                            $big_post = $news[$ib_post];
+
+                            $bp_en = get_field('title_en',$big_post->ID);
+                            $bp_ru = get_field('content',$big_post->ID);
+
+                            if ((LANG == 'RU') && ($bp_ru != '')) {
+                              require_once "include/news_big.php";
+                              $lb_post = false;
+                            };
+                            if ((LANG == 'EN') && ($bp_en != '')) {
+                              require_once "include/news_big.php";
+                              $lb_post = false;
+                            };
+
+                          };
+                          $ib_post++;
+                        };
 
                         ?></span>
 

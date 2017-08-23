@@ -48,7 +48,7 @@
 
                     array(
 
-                        'numberposts' => -1,
+                        'numberposts' => 100,
 
                         'offset' => 0,
 
@@ -191,7 +191,28 @@
 
                     $table = 'interview';
 
-                    require_once "include/search_input.php" ?>
+                    require_once "include/search_input.php";
+
+                    $int_count = 0;
+
+                    foreach ($interview as $obj) {
+
+                        if($obj->post_name == 'archive') {
+
+                            continue;
+
+                        }
+
+                        if ($int_count == 1) {
+
+                            break;
+
+                        }
+
+                        $int_en = get_field('content_en',$post->ID);
+                        $int_ru= get_field('content',$post->ID);
+
+                        if ((LANG == 'RU')&&($int_ru != '')) { ?>
 
                     <h3 class="red"><?php echo $post->post_title; ?></h3>
 
@@ -228,6 +249,55 @@
                         <a href="#"><?php echo lng_text('Автор'); ?>: <?php echo $user->display_name; ?></a>
 
                     </div>
+
+                  <?php
+
+                    $int_count = 1;
+
+                  } elseif ((LANG == 'EN') && ($int_en != '')) { ?>
+
+                      <h3 class="red"><?php echo get_field('title_en', $post->ID); ?></h3>
+
+                      <?php
+
+                      $img = get_field('big_picture', $post->ID);
+
+                      if ($img) { ?>
+
+                          <img src="<?php echo $img['url']; ?>" alt=""/>
+
+                      <?php } ?>
+
+
+
+                      <div class="big_news_item_date">
+
+                          <?php
+
+                          $date = strtotime($post->post_date);
+
+                          $date = date("d ",$date) . get_r_month(date("n",$date)) . date(" Y H:i",$date);
+
+                          echo $date; ?>
+
+                      </div>
+
+                      <?php echo get_field('content_en', $post->ID); ?>
+
+                      <?php $user = get_user_by('id', $post->author); ?>
+
+                      <div class="big_news_item_avtor">
+
+                          <a href="#"><?php echo lng_text('Автор'); ?>: <?php echo $user->display_name; ?></a>
+
+                      </div>
+
+                      <?php
+
+                      $int_count = 1;
+                     } else continue;
+
+                 }; ?>
 
                 </div>
 
