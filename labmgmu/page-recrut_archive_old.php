@@ -90,12 +90,7 @@ the_post();
                             foreach ($studies as $obj) {
                                 if (!get_field('archive', $obj->ID)){
                                     continue;
-                                };
-
-                                $studies_en = get_field('description_en',$obj->ID);
-                                $studies_ru = get_field('descriptin',$obj->ID);
-
-                                if ((LANG == 'RU')&&($studies_ru != '')) {
+                                }
                                 ?>
 
                                 <a onclick="get_study(<?php echo $obj->ID; ?>, 1); return false;" href="#">
@@ -110,27 +105,7 @@ the_post();
                                         <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
                                     </div>
                                 </a>
-
-                            <?php $index++;
-                           } elseif ((LANG == 'EN')&&($studies_en != '')) { ?>
-
-                              <a onclick="get_study(<?php echo $obj->ID; ?>, 1); return false;" href="#">
-                                  <div class="main_news_item">
-                                      <div id="study_bg<?php echo $obj->ID; ?>" class="study_bg <?php
-                                          if (!$index) {
-                                              echo 'active';
-                                              $study = $obj;
-                                          } ?> archive">
-                                          <span class="study_post_title"><?php echo get_field('title_en',$obj->ID); ?></span>
-                                      </div>
-                                      <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
-                                  </div>
-                              </a>
-
-                              <?php $index++;
-                              } else continue;
-
-                            }; ?>
+                            <?php $index++; } ?>
 
                         </div>
 
@@ -153,7 +128,7 @@ the_post();
                                         echo $date; ?>
                                     </div>
                                     <div class="description_archive">
-                                        <?php echo wiki(get_field_lng('descriptin', $study->ID)); ?>
+                                        <?php echo wiki(get_field('descriptin', $study->ID)); ?>
                                     </div>
                                 </div>
                             <?php } ?>
