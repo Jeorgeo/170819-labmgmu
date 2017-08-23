@@ -39,7 +39,7 @@
 
                     $news = get_posts(
                         array(
-                            'numberposts' => -1,
+                            'numberposts' => 100,
                             'offset' => 0,
                             'orderby'     => 'date',
                             'order'       => 'DESC',
@@ -211,12 +211,35 @@
                     $table = 'news';
 
 
-                    require_once "include/search_input.php" ?>
+                    require_once "include/search_input.php";
 
+                    $lbn = 0;
+                    $index_bn = 0;
 
-                    <?php require_once "include/news_big.php"; ?>
+                    if ((count($news[$index_bn])) && ($lbn == 0)) {
 
+                        $big_post =  $news[$index_bn];
 
+                        $new_en = get_field('title_en',$big_post->ID);
+                        $new_ru = get_field('content',$big_post->ID);
+
+                    if ((LANG == 'RU')&&($new_ru != '')) {
+
+                    require_once "include/news_big.php";
+
+                    $lbn = 1;
+
+                    } elseif ((LANG == 'EN')&&($new_en != '')) {
+
+                      require_once "include/news_big.php";
+
+                      $lbn = 1;
+
+                    } else continue;
+                    $index_bn++;
+                  };
+
+                  ?>
                 </div>
 
 

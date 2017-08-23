@@ -1,8 +1,8 @@
 <?php
-global $big_post;
+/*global $big_post;
 if ($big_post->ID == NULL){
     $big_post = $post;
-}
+}*/
 ?>
 
 <div class="big_news_item">
@@ -26,7 +26,11 @@ if ($big_post->ID == NULL){
         $date = date("d ",$date) . get_r_month(date("n",$date)) . date(" Y H:i",$date);
         echo $date; ?>
     </div>
-    <?php echo wiki(get_field_lng('content', $big_post->ID)); ?>
+    <?php   if (LANG == 'RU') {
+          echo wiki(get_field('content', $big_post->ID));
+      } else {
+          echo wiki(get_field('content_en', $big_post->ID));
+      }; ?>
     <div class="big_news_item_avtor">
         <a href="<?php echo get_field('author', $big_post->ID)?>"><?php echo lng_text('Автор'); ?>: <?php echo get_field('author', $big_post->ID)?></a>
     </div>
