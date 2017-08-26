@@ -112,12 +112,13 @@ get_header();
 
         </div>
 
-
+        <?php
+        if (LANG == 'RU') {
+         ?>
 
         <h1>
 
-            <?php if (LANG == 'RU') echo lng_text('Регламент');
-             else echo lng_text('Regulations');?>
+            <?php echo lng_text('Регламент');?>
 
             <div class="h1_line"></div>
 
@@ -183,8 +184,7 @@ get_header();
 
                 <div class="text">
 
-                    <?php if (LANG == 'RU') echo get_field('description', $prrs_order[ 0]->ID);
-                    else  echo get_field('description_en', $prrs_order[ 0]->ID);?>
+                    <?php  echo get_field('description', $prrs_order[ 0]->ID);?>
 
                 </div>
 
@@ -194,7 +194,7 @@ get_header();
 
         </div>
 
-
+      <?php }; ?>
 
         <h1>
 
@@ -243,7 +243,14 @@ get_header();
 
                 );
 
-                foreach ($prrs_video as $obj) { ?>
+
+                foreach ($prrs_video as $obj) {
+
+                  $label_en = get_field('description_en',$obj->ID);
+                  $label_ru = get_field('description',$obj->ID);
+
+                  if ((LANG == 'RU')&&($label_ru != '')) {
+                    ?>
 
                     <div class="row">
 
@@ -259,8 +266,7 @@ get_header();
 
                                 <div class="news_mini_info">
 
-                                    <?php if (LANG == 'RU') echo get_field('short', $obj->ID);
-                                    else echo get_field('short_en', $obj->ID); ?>
+                                    <?php echo get_field('short', $obj->ID); ?>
 
                                 </div>
 
@@ -280,7 +286,45 @@ get_header();
 
                     </div>
 
-                <?php } ?>
+                  <?php } elseif ((LANG == 'EN')&&($label_en != '')) { ?>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="news_mini">
+
+                                <div class="news_mini_title">
+
+                                    <?php echo get_field('title_en', $obj->ID); ?>
+
+                                </div>
+
+                                <div class="news_mini_info">
+
+                                    <?php echo get_field('short_en', $obj->ID); ?>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <a onclick="get_video('prrs_video',<?php echo $obj->ID; ?>); return false;" href="#">
+
+                            <div class="col-md-6 research_video">
+
+                                <img src="<?php $img = get_field('picture', $obj->ID); echo $img['url']; ?>" alt=""/>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                <?php
+              } else continue;
+               } ?>
 
 
 
@@ -296,26 +340,78 @@ get_header();
 
                 $table = 'news';
 
-                require_once "include/search_input.php" ?>
+                require_once "include/search_input.php" ;
 
-                <div class="video_block" id="video_block">
+                $label_f = true;
+                $video_i = 0;
 
-                    <iframe width="100%" src="//www.youtube.com/embed/<?php echo get_field('video', $prrs_video[ 0]->ID); ?>" frameborder="0" allowfullscreen></iframe>
+                while ($video_i <= 30) {  //Делаем выборку по последним 30 новостям
+                  if(($prrs_video[$video_i]) && ($label_f)) {
 
-                </div>
+                    $vbig_post = $prrs_video[$video_i];
+                    $label_en = get_field('description_en', $vbig_post->ID);
+                    $label_ru = get_field('description', $vbig_post->ID);
 
+                    if ((LANG == 'RU')&&($label_ru != '')) {
 
+                  ?>
 
-                <div class="research_big_text_place">
+                  <div class="video_block" id="video_block">
 
-                    <div class="research_big_text">
+                      <iframe width="100%" src="//www.youtube.com/embed/<?php
+                       echo get_field('video', $vbig_post->ID); ?>"
+                       frameborder="0" allowfullscreen></iframe>
 
-                        <?php if (LANG == 'RU') echo htmlspecialchars_decode( get_field('description', $prrs_video[ 0]->ID));
-                         else echo htmlspecialchars_decode( get_field('description_en', $prrs_video[ 0]->ID));?>
+                  </div>
+
+                  <div class="research_big_text_place">
+
+                      <div class="research_big_text">
+
+                        <?php echo htmlspecialchars_decode (
+                          get_field('description', $vbig_post->ID));
+                        ?>
+
+                      </div>
+
+                  </div>
+
+                  <?php
+
+                  $label_f = false;
+
+                };
+                if ((LANG == 'EN')&&($label_en != '')) { ?>
+
+                  <div class="video_block" id="video_block">
+
+                      <iframe width="100%" src="//www.youtube.com/embed/<?php
+                       echo get_field('video_en', $vbig_post->ID); ?>"
+                       frameborder="0" allowfullscreen></iframe>
+
+                  </div>
+
+                    <div class="research_big_text_place">
+
+                        <div class="research_big_text">
+
+                          <?php echo htmlspecialchars_decode(
+                            get_field('description_en', $vbig_post->ID));?>
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <?php
+
+                    $label_f = false;
+
+                    };
+
+                  };
+                  $video_i++;
+                }
+               ?>
 
             </div>
 

@@ -192,13 +192,18 @@
                                     $prrs_order[] = $obj;
                                 }
                             }
+														  if (LANG == 'RU') {
                             ?>
+
+
 
                             <a href="/prrs_order/<?php echo $prrs_order[ 0]->post_name; ?>">
                                 <div class="sub_menu inner">
                                     <?php echo lng_text('Регламент'); ?>
                                 </div>
                             </a>
+
+													<?php }; ?>
 
                             <a href="/prresearch#video">
                                 <div class="sub_menu inner">
@@ -252,6 +257,7 @@
                                     $prrs_order[] = $obj;
                                 }
                             }
+														if (LANG == 'RU') {
                             ?>
 
                             <a href="/clrs_order/<?php echo $prrs_order[ 0]->post_name; ?>">
@@ -259,6 +265,8 @@
                                     <?php echo lng_text('Регламент'); ?>
                                 </div>
                             </a>
+
+													<?php }; ?>
 
                             <a href="/clresearch#video">
                                 <div class="sub_menu inner">
